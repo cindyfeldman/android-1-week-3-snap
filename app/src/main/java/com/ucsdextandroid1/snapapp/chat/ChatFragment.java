@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +48,17 @@ public class ChatFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         //TODO add click listener to adapter
+     adapter.setOnItemClickCallback(new ChatItemViewHolder.ChatClickListener() {
+         @Override
+         public void OnChatItemClick(Chat chat) {
+             onItemClick(chat);
+         }
+
+         @Override
+         public void OnChatItemLongClick(Chat chat) {
+             Toast.makeText(getContext(),"Long Click on: " + chat.getFromName(),Toast.LENGTH_SHORT);
+         }
+     });
 
         DataSources.getInstance().getChatItems(new DataSources.Callback<List<Chat>>() {
             @Override

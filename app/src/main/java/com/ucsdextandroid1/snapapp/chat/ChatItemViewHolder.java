@@ -1,6 +1,7 @@
 package com.ucsdextandroid1.snapapp.chat;
 
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class ChatItemViewHolder extends RecyclerView.ViewHolder {
     private TextView emojiView;
 
     private Chat currentChat;
+    private ChatClickListener chatClickListener;
 
     public static ChatItemViewHolder inflate(ViewGroup parent) {
         return new ChatItemViewHolder(LayoutInflater.from(parent.getContext())
@@ -31,13 +33,32 @@ public class ChatItemViewHolder extends RecyclerView.ViewHolder {
 
     private ChatItemViewHolder(@NonNull View itemView) {
         super(itemView);
-        
+
         imageView = itemView.findViewById(R.id.vci_image);
         titleView = itemView.findViewById(R.id.vci_title);
         subtitleView = itemView.findViewById(R.id.vci_subtitle);
         emojiView = itemView.findViewById(R.id.vci_emoji);
 
         //TODO add click listener
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ChatItemViewHolder", "Click detected");
+                Log.d("ChatItemViewHolder", currentChat.getFromName());
+                chatClickListener.OnChatItemClick(currentChat);
+
+
+
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                chatClickListener.OnChatItemLongClick(currentChat);
+                return true;
+            }
+        });
+
     }
 
     public void bind(Chat chat) {
@@ -65,8 +86,13 @@ public class ChatItemViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public interface ChatClickListener {
+    public void setChatItemClickCallback(ChatClickListener listener) {
+        chatClickListener = listener;
+    }
 
+    public interface ChatClickListener {
+             void OnChatItemClick(Chat chat);
+            void OnChatItemLongClick(Chat chat);
     }
 
 }
