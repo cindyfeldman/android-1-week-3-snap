@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ucsdextandroid1.snapapp.DataSources;
 import com.ucsdextandroid1.snapapp.R;
+import com.ucsdextandroid1.snapapp.chat.Chat;
+import com.ucsdextandroid1.snapapp.chat.ChatItemViewHolder;
 import com.ucsdextandroid1.snapapp.util.WindowUtil;
 
 import java.util.List;
@@ -50,7 +52,7 @@ public class StoriesFragment extends Fragment {
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return 2;
+                return adapter.getSpanAtIndex(position);
             }
         });
 
@@ -58,12 +60,19 @@ public class StoriesFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         //TODO add a callback to the adapter that calls the method onStoryClicked when the user clicks on the list item
+        adapter.setOnItemClickCallback(new StoryCardViewHolder.StoryCardClickListener() {
+            @Override
+            public void onStoryCardItemClicked(Story story) {
+                onStoryClicked(story);
+            }
+        });
+
 
         DataSources.getInstance().getStoryCards(new DataSources.Callback<List<Story>>() {
             @Override
             public void onDataFetched(List<Story> data) {
                 //TODO set the data from the DataSource to the adapter
-
+                adapter.setItems(getContext(), data);
             }
         });
 
@@ -71,7 +80,7 @@ public class StoriesFragment extends Fragment {
     }
 
     private void onStoryClicked(Story story) {
-
+        Toast.makeText(getContext(), story.getStoryLink(), Toast.LENGTH_SHORT).show();
     }
 
 }

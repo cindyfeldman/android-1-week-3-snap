@@ -33,7 +33,7 @@ public class StoryCardViewHolder extends RecyclerView.ViewHolder {
         //TODO find all of the views
     imageView = itemView.findViewById(R.id.vsc_image_view);
     titleView = itemView.findViewById(R.id.vsc_title);
-    subtitleView = itemView.findViewById(R.id.vci_subtitle);
+    subtitleView = itemView.findViewById(R.id.vsc_subtitle);
 
         //TODO add a click listener to the itemView that calls the custom click listener
     imageView.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +51,7 @@ public class StoryCardViewHolder extends RecyclerView.ViewHolder {
         Picasso.get()
                 .load(story.getImageUrl())
                 .into(imageView);
+
         //TODO set the title and the subtitle
         titleView.setText(story.getTitle());
         subtitleView.setText(story.getSubtitle());

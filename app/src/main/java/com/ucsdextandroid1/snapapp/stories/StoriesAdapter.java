@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ucsdextandroid1.snapapp.R;
+import com.ucsdextandroid1.snapapp.chat.ChatItemViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class StoriesAdapter extends RecyclerView.Adapter {
 
     private List<StoriesListItem> items = new ArrayList<>();
-
+private StoryCardViewHolder.StoryCardClickListener listener;
     public void setItems(Context context, List<Story> stories) {
         items.clear();
 
@@ -38,9 +39,12 @@ public class StoriesAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         switch(viewType) {
             case StoriesListItem.TYPE_Story:
-                return StoryCardViewHolder.inflate(parent);
+                StoryCardViewHolder viewHolder = StoryCardViewHolder.inflate(parent);
+                viewHolder.setStoryItemClickCallback(listener);
+                return viewHolder;
 
             case StoriesListItem.TYPE_TITLE:
                 return StoriesSectionTitleViewHolder.inflate(parent);
@@ -82,9 +86,9 @@ public class StoriesAdapter extends RecyclerView.Adapter {
     public int getSpanAtIndex(int position){
         switch(getItemViewType(position)){
             case StoriesListItem.TYPE_Story:
-                return 2;
+                return 1;
              case StoriesListItem.TYPE_TITLE:
-                 return 1;
+                 return 2;
             default :
                 return 0;
 
@@ -92,7 +96,7 @@ public class StoriesAdapter extends RecyclerView.Adapter {
     }
 
     //TODO add a custom interface called Callback that extends the click listener defined on the StoriesCardViewHolder
-    interface Callback extends StoryCardViewHolder.StoryCardClickListener{ }
+
 
     private class StoriesListItem {
 
@@ -127,5 +131,7 @@ public class StoriesAdapter extends RecyclerView.Adapter {
         }
 
     }
-
+    public void setOnItemClickCallback(StoryCardViewHolder.StoryCardClickListener listener) {
+        this.listener = listener;
+    }
 }
